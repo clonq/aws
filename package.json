@@ -1,10 +1,11 @@
 {
   "name": "aws",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "scripts": {
-  	"cb": ". ./scripts/create-bucket.sh",
-  	"uw": ". ./scripts/update-website.sh",
+  	"init": ". ./scripts/create-bucket.sh",
+  	"web": ". ./scripts/update-website.sh",
+    "smoke": "echo --- && curl http://io.r3v0.s3-website-us-east-1.amazonaws.com && echo ---",
   	"uag": ". ./scripts/update-api-gateway.sh",
   	"ul": ". ./scripts/update-lambda.sh"
   },
