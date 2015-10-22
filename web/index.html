@@ -1,1 +1,30 @@
-test
+<input type="file" id="file-chooser" /> 
+<button id="upload-button">File Upload</button>
+<div id="results"></div>
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.10.min.js"></script>
+<script type="text/javascript">
+    // todo configure credentials
+    // AWS.config.credentials = ...;
+    AWS.config.region = 'us-east-1';
+</script>
+
+<script type="text/javascript">
+    var bucket = new AWS.S3({params: {Bucket: 'io.r3v0'}});
+    var fileChooser = document.getElementById('file-chooser');
+    var button = document.getElementById('upload-button');
+    var results = document.getElementById('results');
+    button.addEventListener('click', function() {
+    var file = fileChooser.files[0];
+    if (file) {
+        results.innerHTML = '';
+
+        var params = {Key: file.name, ContentType: file.type, Body: file};
+        bucket.upload(params, function (err, data) {
+            results.innerHTML = err ? err : 'UPLOADED.';
+        });
+        } else {
+            results.innerHTML = 'Nothing to upload.';
+        }
+    }, false);
+</script>
