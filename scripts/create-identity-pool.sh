@@ -1,0 +1,1 @@
+aws cognito-identity create-identity-pool --identity-pool-name identities --allow-unauthenticated-identities
