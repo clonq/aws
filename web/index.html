@@ -6,7 +6,7 @@
 <script type="text/javascript">
     AWS.config.region = 'us-east-1';
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        AccountId: 'todo',
+        AccountId: '504134033375',
         RoleArn: 'todo',
         IdentityPoolId: 'us-east-1:21c97611-5cf9-4c3a-8035-7874c1a2de1e'
     });
@@ -14,7 +14,7 @@
         if(err) {
             alert(err);
         } else {
-            var bucket = new AWS.S3({params: {Bucket: 'io.r3v0'}});
+            var bucket = new AWS.S3({params: {Bucket: 'datasmart.io'}});
             var fileChooser = document.getElementById('file-chooser');
             var button = document.getElementById('upload-button');
             var results = document.getElementById('results');

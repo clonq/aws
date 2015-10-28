@@ -1,0 +1,39 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "data smart template",
+    "Resources": {
+        "Website": {
+            "Type" : "AWS::S3::Bucket",
+            "Properties" : {
+                "BucketName" : "datasmart.io",
+                "AccessControl" : "PublicRead",
+                "WebsiteConfiguration": {
+                    "IndexDocument": "index.html",
+                    "ErrorDocument": "error.html"
+                }
+            }
+        },
+        "WebsiteBucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": { "Ref": "Website" },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": ["s3:GetObject"],
+                            "Resource": { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "Website" }, "/*" ] ] }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "WebsiteURL": {
+            "Value": { "Ref": "Website" },
+            "Description": "website url"
+        }
+    }
+}
