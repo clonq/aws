@@ -7,7 +7,7 @@
     AWS.config.region = 'us-east-1';
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         AccountId: '504134033375',
-        RoleArn: 'todo',
+        RoleArn: 'arn:aws:iam::504134033375:role/datasmart-cognito-unauthenticated',
         IdentityPoolId: 'us-east-1:21c97611-5cf9-4c3a-8035-7874c1a2de1e'
     });
     AWS.config.credentials.refresh(function(err){
