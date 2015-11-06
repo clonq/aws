@@ -5,11 +5,19 @@
         "Website": {
             "Type" : "AWS::S3::Bucket",
             "Properties" : {
-                "BucketName" : "datasmart.io",
+                "BucketName" : "datasmartio",
                 "AccessControl" : "PublicRead",
                 "WebsiteConfiguration": {
                     "IndexDocument": "index.html",
                     "ErrorDocument": "error.html"
+                },
+                "CorsConfiguration": {
+                    "CorsRules": [{
+                        "AllowedHeaders": ["Authorization"],
+                        "AllowedOrigins": ["http://datasmartio.s3.amazonaws.com"],
+                        "AllowedMethods": ["GET"],
+                        "MaxAge": 3000
+                    }]
                 }
             }
         },
@@ -22,7 +30,7 @@
                         {
                             "Effect": "Allow",
                             "Principal": "*",
-                            "Action": ["s3:GetObject"],
+                            "Action": ["s3:GetObject", "s3:PutObject"],
                             "Resource": { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "Website" }, "/*" ] ] }
                         }
                     ]

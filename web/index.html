@@ -1,28 +1,47 @@
-<input type="file" id="file-chooser" /> 
-<button id="upload-button">File Upload</button>
-<div id="results"></div>
+<html>
+<head>
+    <meta name="google-signin-client_id" content="572318376947-cqoiiil50bf7ojcof39rtcrrepvu0kki.apps.googleusercontent.com">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.10.min.js"></script>
+</head>
+<body>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        AWS.config.region = 'us-east-1';
+        var creds = AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            AccountId: '504134033375',
+            RoleArn: 'arn:aws:iam::504134033375:role/datasmart-cognito-unauthenticated',
+            IdentityPoolId: 'us-east-1:21c97611-5cf9-4c3a-8035-7874c1a2de1e'
+        });
 
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.10.min.js"></script>
-<script type="text/javascript">
-    AWS.config.region = 'us-east-1';
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        AccountId: '504134033375',
-        RoleArn: 'arn:aws:iam::504134033375:role/datasmart-cognito-unauthenticated',
-        IdentityPoolId: 'us-east-1:21c97611-5cf9-4c3a-8035-7874c1a2de1e'
-    });
-    AWS.config.credentials.refresh(function(err){
-        if(err) {
-            alert(err);
-        } else {
-            var bucket = new AWS.S3({params: {Bucket: 'datasmart.io'}});
+        AWS.config.credentials = creds;
+
+        var id_token;
+
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+
+            id_token = googleUser.getAuthResponse().id_token;
+
+            AWS.config.credentials.RoleArn = 'arn:aws:iam::504134033375:role/datasmart-cognito-authenticated';
+            AWS.config.credentials.Logins = {
+                'accounts.google.com': id_token
+            };
+            
+            var bucket = new AWS.S3({params: {Bucket: 'datasmartio'}});
             var fileChooser = document.getElementById('file-chooser');
             var button = document.getElementById('upload-button');
             var results = document.getElementById('results');
+
             button.addEventListener('click', function() {
                 var file = fileChooser.files[0];
                 if (file) {
                     results.innerHTML = '';
-                    var params = {Key: file.name, ContentType: file.type, Body: file};
+                    var params = {Key: 'raw/'+file.name, ContentType: file.type, Body: file};
                     bucket.upload(params, function (err, data) {
                         results.innerHTML = err ? err : 'UPLOADED';
                     });
@@ -30,6 +49,15 @@
                     results.innerHTML = 'Nothing to upload.';
                 }
             }, false);            
+
         }
-    });
-</script>
+    </script>
+    
+    <div id="uploader">
+        <input type="file" id="file-chooser" /> 
+        <button id="upload-button">File Upload</button>
+        <div id="results"></div>
+    </div>
+
+</body>
+</html>
