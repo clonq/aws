@@ -36,6 +36,18 @@
                     ]
                 }
             }
+        },
+        "FileProcessor": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Runtime": "nodejs",
+                "Code": {
+                    "S3Bucket": "datasmartio",
+                    "S3Key": "code/fileHandler.js.zip"
+                },
+                "Handler": "fileHandler.test",
+                "Role": "arn:aws:iam::504134033375:role/lambda-exec-role"
+            }
         }
     },
     "Outputs": {
