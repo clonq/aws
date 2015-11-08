@@ -1,15 +1,12 @@
 {
   "name": "aws",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "index.js",
   "scripts": {
-    "init": ". ./scripts/create-bucket.sh",
-    "web": ". ./scripts/update-website.sh",
-    "security": ". ./scripts/create-identity-pool.sh",
-    "cognito": ". ./scripts/create-authenticated-cognito-role.sh",
-    "smoke": "echo --- && curl http://io.r3v0.s3-website-us-east-1.amazonaws.com && echo ---",
-    "uag": ". ./scripts/update-api-gateway.sh",
-    "ul": ". ./scripts/update-lambda.sh"
+    "create-stack": "aws cloudformation create-stack --stack-name datasmart --template-body file://datasmart.json", 
+    "update-website": "cd ./web/code && tar -czf code.zip fileHandler.js && cd ../.. && aws s3 sync web s3://datasmartio",
+    "update-stack": "aws cloudformation update-stack --stack-name datasmart --template-body file://datasmart.json", 
+    "delete-stack": "aws s3 rb s3://datasmartio --force && aws cloudformation delete-stack --stack-name datasmart"
   },
   "author": "Ovi Comes",
   "devDependencies": {
