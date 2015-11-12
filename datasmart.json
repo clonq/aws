@@ -48,6 +48,24 @@
                 "Handler": "fileHandler.test",
                 "Role": "arn:aws:iam::504134033375:role/lambda-exec-role"
             }
+        },
+        "Database": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": "userdata",
+                "AttributeDefinitions": [{
+                    "AttributeName": "Id",
+                    "AttributeType": "S"
+                }],
+                "KeySchema": [{
+                    "AttributeName": "Id",
+                    "KeyType": "HASH"
+                }],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            }
         }
     },
     "Outputs": {
