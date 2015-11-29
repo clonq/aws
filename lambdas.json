@@ -1,0 +1,18 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "data smart template",
+    "Resources": {
+        "FileProcessor": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Runtime": "nodejs",
+                "Code": {
+                    "S3Bucket": "datasmartio",
+                    "S3Key": "code/lambdas.zip"
+                },
+                "Handler": "fileHandler.test",
+                "Role": "arn:aws:iam::504134033375:role/lambda_s3_exec_role"
+            }
+        }
+    }
+}
