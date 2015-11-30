@@ -1,0 +1,9 @@
+{
+  "name": "apier",
+  "version": "0.0.1",
+  "author": "Ovi Comes",
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "uuid": "^2.0.1"
+  }
+}

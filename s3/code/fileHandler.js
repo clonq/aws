@@ -11,10 +11,11 @@ var lineCounter = 0;
 var keys = [];
 
 exports.test = function(event, context) {
-    // var bucket = event.Records[0].s3.bucket.name;
-    // var key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
-    var bucket = 'datasmartio';
-    var key = 'raw/3liner.csv';
+    var bucket = event.Records[0].s3.bucket.name;
+    var key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
+console.log('key:', key);    
+    // var bucket = 'datasmartio';
+    // var key = 'raw/3liner.csv';
     var params = {Bucket: bucket, Key: key};
     var s3rs = s3.getObject(params).createReadStream();
     var rl = require('readline').createInterface({
@@ -24,6 +25,7 @@ exports.test = function(event, context) {
     rl.on('line', function (line) {
         if(lineCounter++ === 0) {
             keys = extractKeys(line);
+console.log(keys);
         } else {
             var data = parseLine(line);
             insert('userdata', data, 'Id', genericCallback);
